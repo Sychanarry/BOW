@@ -8,7 +8,13 @@
             <div class="col-12 col-md-8 col-lg-5">
                 <div class="card">
                     <div class="card-body p-5">
-                        <form method="POST" action="{{ route('login') }}">
+                        @if ($message = Session::get('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>{{ $message }}</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+                        <form method="POST" action="{{ route('auth') }}">
                             @csrf
                             <div class="mb-3">
                                 <label for="email" class="col-form-label">{{ __('Email Address') }}</label>
@@ -28,7 +34,6 @@
                                 <input id="password" type="password"
                                     class="form-control @error('password') is-invalid @enderror" name="password" required
                                     autocomplete="current-password">
-
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
