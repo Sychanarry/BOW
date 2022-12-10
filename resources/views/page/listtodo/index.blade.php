@@ -8,7 +8,7 @@ use App\Models\User;
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
-                        <h5 class="card-title">ລາຍການໂຄງການທີ່ໄດ້ຮັບເໝາະໝາຍ.</h5>
+                        <h5 class="card-title">List Todo.</h5>
                     </div>
                 </div>
                 <div class="accordion accordion-flush" id="accordionFlushExample">

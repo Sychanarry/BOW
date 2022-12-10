@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Listtodo;
 use App\Models\Project;
 use App\Models\Todo;
-use Exception;
 use Illuminate\Http\Request;
 
-class TodoController extends Controller
+class ListtodoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +17,18 @@ class TodoController extends Controller
     public function index()
     {
         $project = Project::join('asign', 'asign.project_id', 'project.id')
-            ->join('users', 'users.id', 'asign.asign_to_id')
             ->where('asign.asign_to_id', Auth()->user()->id)
-            ->select('project.id', 'project.project_name', 'project.remark', 'users.profile', 'users.name', 'asign.asign_to_id')
             ->get();
-        return view('page.todo.index', compact('project'));
+        return view('page.listtodo.index', compact('project'));
+    }
+
+    public function listtodobyproject($project_id)
+    {
+        $listtodo = Todo::join('project', 'project.id', 'todo.project_id')
+            ->join('asign', 'asign.project_id', 'project.id')
+            ->where('asign.asign_to_id', Auth()->user()->id)
+            ->where('project.id', $project_id)->get();
+        return view('page.listtodo.listmytodobyproject', compact('listtodo'));
     }
 
     /**
@@ -42,42 +49,27 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-
-        try {
-            $todo = new Todo();
-            $todo->project_id = $request->id;
-            $todo->title = $request->todo_title;
-            $todo->status = $request->todo_status;
-            $todo->save();
-            $listmytodo = Todo::join('asign', 'asign.project_id', 'todo.project_id')
-            ->where('todo.project_id', $request->id)
-                ->where('asign.asign_to_id', Auth()->user()->id)
-                ->count();
-            return response()->json(['count' => $listmytodo, 'status' => true]);
-        } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage(), 'status' => false]);
-        }
-
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Todo  $todo
+     * @param  \App\Models\Listtodo  $listtodo
      * @return \Illuminate\Http\Response
      */
-    public function show(Todo $todo)
+    public function show(Listtodo $listtodo)
     {
-
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Todo  $todo
+     * @param  \App\Models\Listtodo  $listtodo
      * @return \Illuminate\Http\Response
      */
-    public function edit(Todo $todo)
+    public function edit(Listtodo $listtodo)
     {
         //
     }
@@ -86,10 +78,10 @@ class TodoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Todo  $todo
+     * @param  \App\Models\Listtodo  $listtodo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Todo $todo)
+    public function update(Request $request, Listtodo $listtodo)
     {
         //
     }
@@ -97,10 +89,11 @@ class TodoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Todo  $todo
+     * @param  \App\Models\Listtodo  $listtodo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Todo $todo)
+    public function destroy(Listtodo $listtodo)
     {
+        //
     }
 }

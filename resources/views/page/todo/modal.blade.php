@@ -1,5 +1,6 @@
 
 {{-- Modal form add List Todo --}}
+
 <div class="modal fade" id="largeModal{{$val->id}}" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -30,7 +31,6 @@
     </div>
   </div><!-- End Modal list todo -->
 
-
 @section('script')
 <script>
     $(document).ready(function() {
@@ -40,12 +40,14 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
             var id = this.id;
             var todo_title = $("#todo_title_"+id).val();
             if(todo_title==''){
                 $("#todo_title_"+id).focus();
                 return false;
             }
+
             var todo_status = $("#todo_status_"+id).val();
             if(todo_status==''){
                 $("#todo_status_"+id).focus();
@@ -63,7 +65,7 @@
                             console.log(res);
                             // return false;
                             if (res.status) {
-                                $("#getcounttodo"+id).html(res.count);
+                                $("#getcounttodo_"+id).html(res.count);
                                 Swal.fire('Success!', "Add Todo Successfully!",
                                 'success');
                             } else {
