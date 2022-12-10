@@ -7,13 +7,8 @@ use App\Models\User;
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-12 col-md-8">
+                    <div class="col-12">
                         <div class="card-title">ໂຄງການ</div>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <div class="card-title text-end">
-                            <a href="{{ route('project.index') }}" class="btn btn-primary btn-sm">ລາຍການໂຄງການທັງຫົມດ</a>
-                        </div>
                     </div>
                 </div>
 

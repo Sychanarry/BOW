@@ -14,8 +14,14 @@
                 <i class="bi bi-folder"></i>
                 <span>Project</span>
             </a>
-        </li><!-- End Dashboard Nav -->
+        </li><!-- End Project Nav -->
 
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{ route('todo.index') }}">
+                <i class="bi bi-folder"></i>
+                <span>Everything Todo</span>
+            </a>
+        </li><!-- End Everything Nav -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
