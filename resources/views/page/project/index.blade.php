@@ -30,7 +30,10 @@ use App\Models\User;
                         @foreach ($project as $key => $val)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
-                                <td>{{ $val->project_name }}</td>
+                                <td>
+                                    <div class="text-title">{{ $val->project_name }}</div>
+                                    <small class="text-detail">{{ $val->remark }}</small>
+                                </td>
                                 <td>
                                     <?php
                                     $users = User::join('asign', 'asign.asign_to_id', 'users.id')
@@ -40,12 +43,14 @@ use App\Models\User;
                                     ?>
                                     <div class="row">
                                         @foreach ($users as $user)
-                                            <div class="col-12 col-sm-6 col-md-4 col-lg-4">
+                                            <div class="col-12 col-sm-4 col-md-3 col-lg-2">
                                                 <div class="d-flex align-content-center">
                                                     <div class="user-profile">
-                                                        <img class="img-fluid rounded-circle" width="45px"
-                                                            src="{{ asset('assets/profile') }}/{{ $user->profile }}"
-                                                            alt="" srcset="">
+                                                        <a href="{{ route('project.show', $val->id) }}">
+                                                            <img class="img-fluid rounded-circle" width="45px"
+                                                                src="{{ asset('assets/profile') }}/{{ $user->profile }}"
+                                                                alt="" srcset="">
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -53,8 +58,6 @@ use App\Models\User;
                                 </td>
                                 <td class="text-center">
                                     <form action="{{ route('project.destroy', $val->id) }}" method="post">
-                                        <a href="{{ route('project.show', $val->id) }}"
-                                            class="btn btn-sm btn-primary">View</a>
                                         @csrf
                                         <button type="button" id="deleteMenu_{{ $val->id }}"
                                             class="btn btn-sm btn-danger deleteMenu">Delete</button>

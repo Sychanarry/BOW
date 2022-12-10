@@ -21,8 +21,11 @@ class ProjectController extends Controller
             $project = Project::paginate(10);
         } else {
             $project = Project::join('asign', 'asign.project_id', 'project.id')
-                ->where('asign.asign_to_id', Auth()->user()->id)->paginate(10);
+                ->where('asign.asign_to_id', Auth()->user()->id)
+                ->select('asign.asign_to_id', 'project.id', 'project.project_name', 'project.remark')
+                ->paginate(10);
         }
+
         return view('page.project.index', compact('project'));
     }
 
@@ -83,7 +86,20 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view('page.project.view');
+        if (Auth()->user()->role == 'admin') { // admin
+            $project = Project::join('asign', 'asign.project_id', 'project.id')
+                ->where('project.id', $project->id)
+                ->select('project.id', 'project.project_name', 'project.remark')
+                ->get();
+        } else {   // staff
+            $project = Project::join('asign', 'asign.project_id', 'project.id')
+                ->where('asign.asign_to_id', Auth()->user()->id)
+                ->where('project.id', $project->id)
+                ->select('project.id', 'project.project_name', 'project.remark')
+                ->get();
+        }
+
+        return view('page.project.view', compact('project'));
     }
 
     /**
