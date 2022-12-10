@@ -33,9 +33,14 @@
                                 <td>{{ $val->mobile }}</td>
                                 <td>{{ $val->status }}</td>
                                 <td class="text-center">
+                                    <form action="{{route('user.destroy',$val->id)}}" method="POST"> 
                                     <button class="btn btn-info btn-sm">View</button>
-                                    <button class="btn btn-primary btn-sm">Edit</button>
-                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                    <a href="{{route('user.edit',$val->id)}}" class="btn btn-primary btn-sm">Edit</a>
+                                 
+                                        @csrf
+                                        @method("DELETE")
+                                    <button  type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
                                 </td>
                             </tr>
                         @endforeach
