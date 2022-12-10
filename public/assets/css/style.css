@@ -8,12 +8,22 @@
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
+/* src: url('/public/fonts/Dolce-Vita.ttf'); */
+@font-face {
+  src: url('../fonts/NotoSansLao_SemiCondensed-Medium.ttf');
+  font-family: "Notosan";
+}
+
 :root {
   scroll-behavior: smooth;
 }
 
+* {
+  font-family: "Nunito", sans-serif, "Notosan" !important;
+}
+
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Open Sans", sans-serif, "Notosan";
   background: #f6f9ff;
   color: #444444;
 }
@@ -34,8 +44,9 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Nunito", sans-serif;
+  font-family: "Nunito", sans-serif, "Notosan";
 }
+
 
 /*--------------------------------------------------------------
 # Main

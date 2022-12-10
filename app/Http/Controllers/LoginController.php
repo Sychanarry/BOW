@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -11,9 +12,25 @@ class LoginController extends Controller
         return view('login.index');
     }
 
-
-    public function login(Request $request)
+    public function auth(Request $request)
     {
-        return view('login.index');
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('user');
+        } else {
+            return back()->with('error', 'email or password failed!');
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        auth('web')->logout();
+        // Auth::logout();
+        return redirect('/');
     }
 }

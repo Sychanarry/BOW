@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -14,7 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('page.user.index');
+        $user = User::paginate(10);
+        return view('page.user.index', compact('user'));
     }
 
     /**
@@ -24,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('page.user.create');
     }
 
     /**
@@ -35,7 +37,40 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'email' => 'required|email|unique:users',
+            'password' => 'required',
+            'name' => 'required',
+            'gender' => 'required',
+            'mobile' => 'required',
+            'role' => 'required',
+            'profile' => 'required|mimes:png,jpg,jpeg'
+        ]);
+        if (request()->hasFile('profile')) {
+            $md5Name = md5(time() . rand(100, 999));
+            $extensionfile = request()->file('profile')->guessExtension();
+            $path = 'assets/profile/';
+            $filename = $md5Name . '.' . $extensionfile;
+            request()->file('profile')->move($path, $filename, '');
+        };
+
+        $User = new User();
+        $User->profile =  $filename;
+        $User->email = $request['email'];
+        $User->password = Hash::make($request['password']);
+        $User->mobile = $request['mobile'];
+        $User->name = $request['name'];
+        $User->gender = $request['gender'];
+        $User->status = isset($request['status']) ? $request['status'] : 'inactive';
+        $User->role = $request['role'];
+        $User->created_by = Auth()->user()->id;
+        $User->updated_by = Auth()->user()->id;
+
+        if ($User->save()) {
+            return redirect()->route('user.index');
+        } else {
+            return back()->withInput();
+        }
     }
 
     /**
