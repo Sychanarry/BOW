@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Todo;
+use Exception;
 use Illuminate\Http\Request;
 
 class TodoController extends Controller
@@ -41,7 +42,22 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        try {
+            $todo = new Todo();
+            $todo->project_id = $request->id;
+            $todo->title = $request->todo_title;
+            $todo->status = $request->todo_status;
+            $todo->save();
+            $listmytodo = Todo::join('asign', 'asign.project_id', 'todo.project_id')
+            ->where('todo.project_id', $request->id)
+                ->where('asign.asign_to_id', Auth()->user()->id)
+                ->count();
+            return response()->json(['count' => $listmytodo, 'status' => true]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage(), 'status' => false]);
+        }
+
     }
 
     /**
