@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -37,6 +38,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // validate from User Form
         $request->validate([
             'email' => 'required|email|unique:users',
             'password' => 'required',
@@ -46,13 +48,21 @@ class UserController extends Controller
             'role' => 'required',
             'profile' => 'required|mimes:png,jpg,jpeg'
         ]);
+
+        //  if profile has value
+
+        $file_name = "";
         if (request()->hasFile('profile')) {
+            
             $md5Name = md5(time() . rand(100, 999));
             $extensionfile = request()->file('profile')->guessExtension();
             $path = 'assets/profile/';
             $filename = $md5Name . '.' . $extensionfile;
             request()->file('profile')->move($path, $filename, '');
         };
+
+
+        // Store Data
 
         $User = new User();
         $User->profile =  $filename;
@@ -65,7 +75,6 @@ class UserController extends Controller
         $User->role = $request['role'];
         $User->created_by = Auth()->user()->id;
         $User->updated_by = Auth()->user()->id;
-
         if ($User->save()) {
             return redirect()->route('user.index');
         } else {
@@ -92,7 +101,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $user = User::find($user)->first();
+        return view('page.user.update',compact('user'));
     }
 
     /**
@@ -103,9 +113,58 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
-    {
-        //
+    { 
+        $request->validate([
+        'password' => 'required',
+        'name' => 'required',
+        'gender' => 'required',
+        'mobile' => 'required',
+        'role' => 'required',
+        'profile' => 'mimes:png,jpg,jpeg'
+    ]);
+
+// dd($request->all()); 
+
+
+    //  if profile has value
+
+    $filename = "";
+  
+    if (request()->hasFile('profile')) {
+        $path = 'assets/profile/' . $user->profile;  
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+        $md5Name = md5(time() . rand(100, 999));
+        $extensionfile = request()->file('profile')->guessExtension();
+        $path = 'assets/profile/';
+        $filename = $md5Name . '.' . $extensionfile;
+        request()->file('profile')->move($path, $filename, '');
     }
+
+    $get_id = User::where('id',$user->id)->first();
+    $db_password = $get_id->password;
+    $password = $request->password;
+    if($db_password === $password){ 
+        $password = $request->password;
+    }else{
+        $password = Hash::make($request->password);
+    }
+    // tbCorn::find($id)->update([
+
+    User::find($user->id)->update([
+        'gender'=>$request->gender,
+        'name'=>$request->name,
+        'email'=>$request->email,
+        'password'=>$password,
+        'mobile'=>$request->mobile,
+        'role'=>$request->role,
+        'status'=>$request->status,
+        'profile'=>$filename?$filename:$user->profile,
+    ]);
+    return redirect()->route('user.index');
+
+}
 
     /**
      * Remove the specified resource from storage.
@@ -115,6 +174,13 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+      $user = User::find($user->id)->first();
+ 
+       $path = 'assets/profile/' . $user->profile;  
+       if (File::exists($path)) {
+           File::delete($path);
+       }
+      $user->delete();
+      return redirect()->route('user.index'); 
     }
 }
