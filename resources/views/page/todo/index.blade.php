@@ -1,5 +1,6 @@
 <?php
 use App\Models\User;
+use App\Models\Todo;
 ?>
 @extends('theme.content')
 @section('content')
@@ -39,10 +40,19 @@ use App\Models\User;
                                     </div>
 
                                 </td>
+                                <?php
+                                $count = Todo::join('asign', 'asign.project_id', 'todo.project_id')
+                                    ->where('todo.project_id', $val->id)
+                                    ->where('asign.asign_to_id', Auth()->user()->id)
+                                    ->count();
+                                ?>
                                 <td class="text-center">
-                                   <div id="getcounttodo{{$val->id}}"></div>
-                                </td>
-                                <td class="text-center">
+
+                                    <a href="{{route('listtodobyproject',$val->id)}}" class="btn btn-sm btn-warning" id="getcounttodo_{{$val->id}}">
+
+                                       <span class="badge bg-danger  text-white">{{$count}} </span> Todo
+                                    </a>
+
                                     <button class="btn btn-primary btn-sm"
                                     data-bs-toggle="modal" data-bs-target="#largeModal{{$val->id}}"
                                     >Add todo</button>

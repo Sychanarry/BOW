@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ListtodoController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TodoController;
@@ -28,4 +29,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::resource('user', UserController::class);
     Route::resource('project', ProjectController::class);
     Route::resource('todo', TodoController::class);
+    Route::resource('listtodo', ListtodoController::class);
+    //get list todo by project id
+    Route::get('listtodobyproject/{id}', [ListtodoController::class, 'listtodobyproject'])->name('listtodobyproject');
 });
