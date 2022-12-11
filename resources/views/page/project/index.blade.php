@@ -47,7 +47,7 @@ use App\Models\User;
                                                 <div class="d-flex align-content-center">
                                                     <div class="user-profile">
                                                         <a href="{{ route('project.viewprojectbyuser',[ $val->id, $user->asign_to_id]) }}">
-                                                            <img class="img-fluid rounded-circle" width="150px"
+                                                            <img class="img-fluid rounded-circle" width="80px"
                                                                 src="{{ asset('assets/profile') }}/{{ $user->profile }}"
                                                                 alt="" srcset="">
                                                         </a>

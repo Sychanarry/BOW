@@ -2,12 +2,12 @@
 @section('login')
     <div class="container">
         <div class="row justify-content-center align-content-center content-login">
-            <div class="d-sm-none d-none d-md-block col-md-4 col-lg-6 text-center">
-                <h3>Bow Solution</h3>
-            </div>
-            <div class="col-12 col-md-8 col-lg-5">
+            <div class="col-12 col-md-8 col-lg-4">
                 <div class="card">
-                    <div class="card-body p-5">
+                    <div class="card-body p-4">
+                        <div class="col-12 text-center">
+                            <img src="{{ asset('assets/img/logo.png') }}" alt="" style="width:100px" class="img-fluid mb-3">
+                        </div>
                         @if ($message = Session::get('error'))
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <strong>{{ $message }}</strong>
