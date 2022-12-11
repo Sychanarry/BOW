@@ -86,22 +86,17 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        if (Auth()->user()->role == 'admin') { // admin
-            $project = Project::join('asign', 'asign.project_id', 'project.id')
-                ->join('users', 'users.id', 'asign.asign_to_id')
-                ->where('project.id', $project->id)
-                ->select('project.id', 'project.project_name', 'project.remark', 'users.profile', 'asign.asign_to_id')
-                ->groupBy('asign.asign_to_id', 'asign.project_id')
-                ->get();
-        } else {   // staff
-            $project = Project::join('asign', 'asign.project_id', 'project.id')
-                ->where('asign.asign_to_id', Auth()->user()->id)
-                ->where('project.id', $project->id)
-                ->select('project.id', 'project.project_name', 'project.remark')
-                ->groupBy('asign.asign_to_id', 'asign.project_id')
-                ->get();
-        }
+    }
 
+    public function viewprojectbyuser($project_id, $user_asign_id)
+    {
+        $project = Project::join('asign', 'asign.project_id', 'project.id')
+            ->where('asign.asign_to_id', $user_asign_id)
+            ->join('users', 'users.id', 'asign.asign_to_id')
+            ->where('project.id', $project_id)
+            ->select('project.id', 'project.project_name', 'project.remark', 'users.profile', 'asign.asign_to_id')
+            ->groupBy('asign.asign_to_id', 'asign.project_id')
+        ->first();
         return view('page.project.view', compact('project'));
     }
 
