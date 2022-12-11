@@ -30,6 +30,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::resource('project', ProjectController::class);
     Route::resource('todo', TodoController::class);
     Route::resource('listtodo', ListtodoController::class);
-    //get list todo by project id
+    // get list todo by project id
     Route::get('listtodobyproject/{id}', [ListtodoController::class, 'listtodobyproject'])->name('listtodobyproject');
+    // function update todo detail
+    Route::post('updatetododetail', [ListtodoController::class, 'updatetododetail'])->name('listtodo.updatetododetail');
 });

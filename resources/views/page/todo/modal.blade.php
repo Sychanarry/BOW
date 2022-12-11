@@ -68,6 +68,9 @@
                                 $("#getcounttodo_"+id).html(res.count);
                                 Swal.fire('Success!', "Add Todo Successfully!",
                                 'success');
+                                setTimeout(function(){
+                                   window.location.reload();
+                                }, 1500);//wait 2 seconds
                             } else {
                                 Swal.fire('Warning!', "Add Doto Failed!", 'error');
                             }

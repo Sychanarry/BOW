@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Listtodo;
 use App\Models\Project;
 use App\Models\Todo;
+use Exception;
 use Illuminate\Http\Request;
 
 class ListtodoController extends Controller
@@ -27,8 +28,10 @@ class ListtodoController extends Controller
         $listtodo = Todo::join('project', 'project.id', 'todo.project_id')
             ->join('asign', 'asign.project_id', 'project.id')
             ->where('asign.asign_to_id', Auth()->user()->id)
-            ->where('project.id', $project_id)->get();
-        return view('page.listtodo.listmytodobyproject', compact('listtodo'));
+            ->where('project.id', $project_id)
+            ->select('todo.*')
+            ->get();
+        return view('page.listtodo.listmytodobyproject', compact('listtodo', 'project_id'));
     }
 
     /**
@@ -49,7 +52,33 @@ class ListtodoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $listtodo = new Listtodo();
+            $listtodo->todo_title = $request->todo_title;
+            $listtodo->status_todo = $request->status_todo;
+            $listtodo->priority = $request->priority;
+            $listtodo->todo_id = $request->todoid;
+            $listtodo->save();
+            $listtododetail = Listtodo::where('todo_id',  $request->todoid)->get();
+            $table = view('page.listtodo.table', compact('listtododetail'))->render();
+            return response()->json(['table' => $table, 'message' => "add todo detail success", 'status' => true]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage(), 'status' => false]);
+        }
+    }
+
+    public function updatetododetail(Request $request)
+    {
+        try {
+            $listtodo = Listtodo::where('id', $request->id)->first();
+            $listtodo->todo_title = $request->todo_title;
+            $listtodo->status_todo = $request->status_todo;
+            $listtodo->priority = $request->priority;
+            $listtodo->save();
+            return response()->json(['message' => "update todo detail success", 'status' => true]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage(), 'status' => false]);
+        }
     }
 
     /**
