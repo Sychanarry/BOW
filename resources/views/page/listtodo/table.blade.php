@@ -1,3 +1,5 @@
+{{-- dispay when add listdetail on page listtododetail only --}}
+
 @foreach($listtododetail as $item)
 <tr>
     <td>

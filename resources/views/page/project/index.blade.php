@@ -38,7 +38,7 @@ use App\Models\User;
                                     <?php
                                     $users = User::join('asign', 'asign.asign_to_id', 'users.id')
                                         ->where('asign.project_id', $val->id)
-                                        ->select('users.profile')
+                                        ->select('users.profile', 'asign.asign_to_id')
                                         ->get();
                                     ?>
                                     <div class="row">
@@ -46,7 +46,7 @@ use App\Models\User;
                                             <div class="col-12 col-sm-4 col-md-3 col-lg-2">
                                                 <div class="d-flex align-content-center">
                                                     <div class="user-profile">
-                                                        <a href="{{ route('project.show', $val->id) }}">
+                                                        <a href="{{ route('project.viewprojectbyuser',[ $val->id, $user->asign_to_id]) }}">
                                                             <img class="img-fluid rounded-circle" width="150px"
                                                                 src="{{ asset('assets/profile') }}/{{ $user->profile }}"
                                                                 alt="" srcset="">
