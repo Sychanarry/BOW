@@ -29,8 +29,8 @@ use App\Models\Todo;
                                     <div class="d-flex">
                                         <div class="user-profile">
                                             <img class="img-fluid rounded-circle me-2" width="45px"
-                                                                src="{{ asset('assets/profile') }}/{{ $val->profile }}"
-                                                                alt="" srcset="">
+                                                src="{{ asset('assets/profile') }}/{{ $val->profile }}" alt=""
+                                                srcset="">
                                         </div>
                                         <div class="user-detail">
                                             <div class="text-title">{{ $val->project_name }}</div>
@@ -47,15 +47,16 @@ use App\Models\Todo;
                                     ->count();
                                 ?>
                                 <td class="text-center">
-
-                                    <a href="{{route('listtodobyproject',$val->id)}}" class="btn btn-sm btn-warning" id="getcounttodo_{{$val->id}}">
-
-                                       <span class="badge bg-danger  text-white">{{$count}} </span> Todo
+                                    <a href="{{ route('listtodobyproject', $val->id) }}" class=" my-2 btn btn-sm btn-warning"
+                                        id="getcounttodo_{{ $val->id }}">
+                                        <span class="badge bg-danger  text-white">{{ $count }}</span>
+                                        <div class="d-none d-md">todo</div>
                                     </a>
-
-                                    <button class="btn btn-primary btn-sm"
-                                    data-bs-toggle="modal" data-bs-target="#largeModal{{$val->id}}"
-                                    >Add todo</button>
+                                    <button class="btn btn-primary btn-sm my-2" data-bs-toggle="modal"
+                                    data-bs-target="#largeModal{{ $val->id }}">
+                                    <i class="bi bi-plus-square"></i>
+                                    <div class="d-none d-md">add</div>
+                                    </button>
                                 </td>
                             </tr>
                             @include('page.todo.modal')

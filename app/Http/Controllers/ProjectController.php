@@ -88,14 +88,17 @@ class ProjectController extends Controller
     {
         if (Auth()->user()->role == 'admin') { // admin
             $project = Project::join('asign', 'asign.project_id', 'project.id')
+                ->join('users', 'users.id', 'asign.asign_to_id')
                 ->where('project.id', $project->id)
-                ->select('project.id', 'project.project_name', 'project.remark')
+                ->select('project.id', 'project.project_name', 'project.remark', 'users.profile', 'asign.asign_to_id')
+                ->groupBy('asign.asign_to_id', 'asign.project_id')
                 ->get();
         } else {   // staff
             $project = Project::join('asign', 'asign.project_id', 'project.id')
                 ->where('asign.asign_to_id', Auth()->user()->id)
                 ->where('project.id', $project->id)
                 ->select('project.id', 'project.project_name', 'project.remark')
+                ->groupBy('asign.asign_to_id', 'asign.project_id')
                 ->get();
         }
 

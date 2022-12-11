@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('list_todo', function (Blueprint $table) {
+        Schema::create('asign', function (Blueprint $table) {
             $table->id();
-            $table->integer('todo_id')->unsigned()->index();
-            $table->string('todo_title');
-            $table->string('status_todo');
-            $table->string('priority');
+            $table->integer('project_id')->unsigned()->index();
+            $table->integer('asign_to_id');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('list_todo');
+        Schema::dropIfExists('asign');
     }
 };

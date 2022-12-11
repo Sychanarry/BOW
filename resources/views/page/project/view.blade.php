@@ -15,25 +15,19 @@ use App\Models\User;
                 <!-- Accordion without outline borders -->
                 <div class="accordion accordion-flush" id="accordionFlushExample">
                     @foreach ($project as $val)
-                        <?php
-                        $users = User::join('asign', 'asign.asign_to_id', 'users.id')
-                            ->where('asign.project_id', $val->id)
-                            ->select('users.*')
-                            ->get();
-                        ?>
-                        @foreach ($users as $user)
+
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingOne">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#flush-collapseOne{{ $user->id }}" aria-expanded="false"
-                                        aria-controls="flush-collapseOne{{ $user->id }}">
+                                        data-bs-target="#flush-collapseOne{{ $val->id }}" aria-expanded="false"
+                                        aria-controls="flush-collapseOne{{ $val->id }}">
                                         <img class="img-fluid rounded-circle me-2" width="45px"
-                                            src="{{ asset('assets/profile') }}/{{ $user->profile }}" alt=""
+                                            src="{{ asset('assets/profile') }}/{{ $val->profile }}" alt=""
                                             srcset="">
                                         <strong>ຊື່ໂຄງການ: </strong>&nbsp; {{ $val->project_name }}
                                     </button>
                                 </h2>
-                                <div id="flush-collapseOne{{ $user->id }}" class="accordion-collapse collapse"
+                                <div id="flush-collapseOne{{ $val->id }}" class="accordion-collapse collapse"
                                     aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample"
                                     style="">
                                     <div class="accordion-body">
@@ -41,7 +35,6 @@ use App\Models\User;
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
                     @endforeach
                 </div><!-- End Accordion without outline borders -->
 

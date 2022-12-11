@@ -21,7 +21,6 @@ return new class extends Migration
             $table->integer('created_by');
             $table->integer('seen');
             $table->timestamps();
-            // $table->foreign('project_id')->references('id')->on('project');
         });
     }
 
